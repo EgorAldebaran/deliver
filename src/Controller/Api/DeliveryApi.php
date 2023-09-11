@@ -35,11 +35,28 @@ class DeliveryApi extends AbstractController
         $date = \DateTime::createFromFormat('Y-m-d', $dateString);
 
         $content = $request->getContent();
+        $coefficient = $calcDelivery->calcCoefficient
+                     (
+                         json_decode($content, true)["base_price"],
+                         json_decode($content, true)["weight"],
+                     )
+                     ;
+        if (!$coefficient) {
+            $errors = "coefficient is null. Something wrong!";
+        }
 
-        
+        $json = [
+            "coefficient" => $coefficient,
+            "data" => $date,
+            "errors" => $errors,
+        ];
+
+        $jsonContent = json_encode($json);
+
+        return new Response($jsonContent);
     }
     
-    #[Route('api/delivery', name: 'delivery_api')]
+    #[Route('api/quick-delivery', name: 'delivery_api')]
     public function delivery(Request $request, CalcDeliveryService $calcDelivery, EntityManagerInterface $entityManager): Response
     {
         $errors = 'success';

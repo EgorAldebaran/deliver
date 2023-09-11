@@ -9,7 +9,8 @@ use App\Service\CalcDeliveryService;
 
 class DeliveryApiTest extends KernelTestCase
 {
-    public const PATH = 'http://localhost/api/delivery';
+    public const PATH_QUICK_DELIVERY = 'http://localhost/api/quick-delivery';
+    public const PATH_SLOW_DELIVERY = 'http://localhost/api/slow-delivery';
 
     /**
     * @var ContainerInterface
@@ -54,7 +55,7 @@ class DeliveryApiTest extends KernelTestCase
 
         $response = $this->client->request(
             'POST',
-            self::PATH,
+            self::PATH_QUICK_DELIVERY,
             [
                 'json' => $quickDelivery,
             ],
@@ -81,6 +82,17 @@ class DeliveryApiTest extends KernelTestCase
         $result = $this->deliveryService->calcCoefficient($weight, $base_price);
         $this->assertEquals($result, 600);
 
+        $response = $this->client->request(
+            'POST',
+            self::PATH_SLOW_DELIVERY,
+            [
+                'json' => $slowlyDelivery,
+            ],
+        );
+
+        $content = $response->getContent();
+        echo "\n";
+        echo $content;
     }
 
 }
