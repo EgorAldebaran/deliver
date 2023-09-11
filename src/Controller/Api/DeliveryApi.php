@@ -22,7 +22,12 @@ class DeliveryApi extends AbstractController
         
         $content = $request->getContent();
 
-        $price = self::BASE_VALUE * json_decode($content, true)["weight"];
+        $price = $calcDelivery->calcPrice
+               (
+                   json_decode($content, true)["weight"],
+                   json_decode($content, true)["period"]
+               )
+               ;
         
         $delivery->setPrice($price);
         $delivery->setPeriod(1000);
