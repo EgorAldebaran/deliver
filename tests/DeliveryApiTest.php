@@ -29,16 +29,18 @@ class DeliveryApiTest extends KernelTestCase
 
     public function testApi()
     {
-        $fakeData = [
-            'jacke' => 'diamonds',
-            'queen' => 'hearts',
+        $quickDelivery = [
+            'base_url' => 'http://QuickDelivery.com',
+            'sourceKladr' => 'Kazahstan city Astana Street 10',
+            'targerKladr' => 'Kazahstan city Astana Street 20',
+            'weight' => 99.10,
         ];
 
         $response = $this->client->request(
             'POST',
             self::PATH,
             [
-                'json' => $fakeData,
+                'json' => $quickDelivery,
             ],
         );
 
