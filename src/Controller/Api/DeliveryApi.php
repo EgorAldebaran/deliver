@@ -8,11 +8,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\CalcDeliveryService;
+use App\Entity\CalcDelivery;
 
 class DeliveryApi extends AbstractController
 {
-    public const BASE_VALUE = 100;
-
     /**
     * @var base_url: string
     * @var sourceKladr string //кладр откуда везем
@@ -35,9 +34,16 @@ class DeliveryApi extends AbstractController
         $date = \DateTime::createFromFormat('Y-m-d', $dateString);
 
         $content = $request->getContent();
+        if (json_decode($content, true)["sourceKladr"] == NULL) {
+            $errors = "path from destination cannot be null";
+        }
+        if (json_decode($content, true)["targetKladr"] == NULL) {
+            $errors = "path target destination cannot be null";
+        }
+
         $coefficient = $calcDelivery->calcCoefficient
                      (
-                         json_decode($content, true)["base_price"],
+                         CalcDelivery::BASE_VALUE,
                          json_decode($content, true)["weight"],
                      )
                      ;
@@ -55,7 +61,20 @@ class DeliveryApi extends AbstractController
 
         return new Response($jsonContent);
     }
-    
+
+
+    /**
+    * @var base_url: string
+    * @var sourceKladr string //кладр откуда везем
+    * @var targetKladr string //кладр куда везем
+    * @var weight float //вес отправления в кг
+    * @return json 
+    *  {
+    *  'price' : float
+    *  'period'  int // количество дней начиная с сегодняшнего, но после 18.00 заявки не принимаются
+    *  'error':string
+    *  }
+    */
     #[Route('api/quick-delivery', name: 'delivery_api')]
     public function delivery(Request $request, CalcDeliveryService $calcDelivery, EntityManagerInterface $entityManager): Response
     {
@@ -65,6 +84,12 @@ class DeliveryApi extends AbstractController
         $date = \DateTime::createFromFormat('Y-m-d', $dateString);
         
         $content = $request->getContent();
+        if (json_decode($content, true)["sourceKladr"] == NULL) {
+            $errors = "path from destination cannot be null";
+        }
+        if (json_decode($content, true)["targetKladr"] == NULL) {
+            $errors = "path target destination cannot be null";
+        }
         
         $price = $calcDelivery->calcPriceForQuickDelivery
                (

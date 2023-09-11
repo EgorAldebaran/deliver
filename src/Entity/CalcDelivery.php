@@ -9,6 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: CalcDeliveryRepository::class)]
 class CalcDelivery
 {
+    public const BASE_VALUE = 150;
+    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
