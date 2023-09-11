@@ -37,13 +37,23 @@ class CalcDeliveryService extends ServiceEntityContainerAbstract
      * @param int $weight  
      * @return float $totalPrice 
      */
-    public function calcPrice(int $weight, int $numbers_days): float
+    public function calcPriceForQuickDelivery(int $weight, int $numbers_days): float
     {
         $price = (float)self::BASE_VALUE * $weight;
         $totalPrice = (float)self::WEIGHT_DAY * $numbers_days * $price;
         return $totalPrice;
     }
 
+    /**
+    * @param float $weight 
+    * @param float $base_price
+    * @return float $coefficient 
+    */
+    public function calcCoefficient(int $weight, float $base_price): float
+    {
+        $coefficient = $weight * $base_price;
+        return (float)$coefficient;
+    }
     
     
 }

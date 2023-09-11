@@ -38,11 +38,11 @@ class DeliveryApiTest extends KernelTestCase
     {
         $weight = 5;
         $numbers_days = 4; 
-        $result = $this->deliveryService->calcPrice($weight, $numbers_days);
+        $result = $this->deliveryService->calcPriceForQuickDelivery($weight, $numbers_days);
         $this->assertEquals($result, 4.2 * 200.00 * 5);
     }
 
-    public function testApi()
+    public function testQuickDelivery()
     {
         $quickDelivery = [
             'base_url' => 'http://QuickDelivery.com',
@@ -64,5 +64,23 @@ class DeliveryApiTest extends KernelTestCase
         $this->assertNotEmpty($content);
 
         echo "\n" . $content;
+        echo "\n";
     }
+    public function testSlowDelivery()
+    {
+        $slowlyDelivery = [
+            'base_url' => 'http://SlowlyDelivery.com',
+            'base_price' => 150,
+            'sourceKladr' => 'Kazahstan city Karaganda Street 11',
+            'targetKladr' => 'Karaganda city Alma-Ata Street 10',
+            'weight' => 50.55,
+        ];
+        $weight = 4;
+        $base_price = 150;
+        
+        $result = $this->deliveryService->calcCoefficient($weight, $base_price);
+        $this->assertEquals($result, 600);
+
+    }
+
 }
