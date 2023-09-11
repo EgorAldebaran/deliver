@@ -49,8 +49,8 @@ class DeliveryApiTest extends KernelTestCase
             'base_url' => 'http://QuickDelivery.com',
             'sourceKladr' => 'Kazahstan city Astana Street 10',
             'targerKladr' => 'Kazahstan city Astana Street 20',
-            'weight' => 99.10,
             'period' => 4,
+            'weight' => 40.4
         ];
 
         $response = $this->client->request(
