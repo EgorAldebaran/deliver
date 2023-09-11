@@ -19,11 +19,8 @@ class CalcDelivery
     #[ORM\Column]
     private ?float $price = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type:"integer", nullable: true)]
     private ?int $period = null;
-
-    #[ORM\Column]
-    private ?float $coefficient = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date = null;
@@ -53,21 +50,9 @@ class CalcDelivery
         return $this->period;
     }
 
-    public function setPeriod(int $period): static
+    public function setPeriod(?int $period): static
     {
         $this->period = $period;
-
-        return $this;
-    }
-
-    public function getCoefficient(): ?float
-    {
-        return $this->coefficient;
-    }
-
-    public function setCoefficient(float $coefficient): static
-    {
-        $this->coefficient = $coefficient;
 
         return $this;
     }

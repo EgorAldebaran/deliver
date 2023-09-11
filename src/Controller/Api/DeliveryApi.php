@@ -51,6 +51,14 @@ class DeliveryApi extends AbstractController
             $errors = "coefficient is null. Something wrong!";
         }
 
+        $delivery->setPrice($coefficient);
+        $delivery->setPeriod(null);
+        $delivery->setDate($date);
+        $delivery->setError('success');
+
+        $entityManager->persist($delivery);
+        $entityManager->flush();
+
         $json = [
             "coefficient" => $coefficient,
             "data" => $date,
@@ -93,7 +101,6 @@ class DeliveryApi extends AbstractController
             $errors = "path from target destination cannot be null";
         }
 
-
         $period = json_decode($content, true)["period"];
         
         $price = $calcDelivery->calcPriceForQuickDelivery
@@ -109,7 +116,6 @@ class DeliveryApi extends AbstractController
         
         $delivery->setPrice($price);
         $delivery->setPeriod($period);
-        $delivery->setCoefficient(10.10);
         $delivery->setDate($date);
         $delivery->setError('success');
 
