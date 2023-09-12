@@ -88,6 +88,11 @@ class DeliveryApi extends AbstractController
     {
         $errors = 'success';
         $delivery = $calcDelivery->getInstance();
+        $currentTime = date('H:i');
+        if ($currentTime == '18:00') {
+            $errors = "Applications are accepted until 18:00";
+        }
+        
         $dateString = date('Y-m-d');
         $date = \DateTime::createFromFormat('Y-m-d', $dateString);
         
@@ -97,7 +102,7 @@ class DeliveryApi extends AbstractController
             $errors = "path from destination cannot be null";
         }
 
-        if (json_decode($content, true)["targerKladr"] == NULL) {
+        if (json_decode($content, true)["targetKladr"] == NULL) {
             $errors = "path from target destination cannot be null";
         }
 
